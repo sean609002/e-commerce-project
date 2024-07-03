@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
+    //whenever the param value changes, listProducts() will be called
     this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
