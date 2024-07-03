@@ -10,8 +10,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit{
   products: Product[] = [];
-  
   currentCategoryId : number = 1;
+  seachMode : boolean = false;
+
   //dependency injection
   constructor(private productService : ProductService,
               private route : ActivatedRoute
@@ -24,7 +25,24 @@ export class ProductListComponent implements OnInit{
   }
 
   listProducts() {
-    const hasCategoryId = this.route.snapshot.paramMap.has('id')!
+    this.seachMode = this.route.snapshot.paramMap.has('keyword')!
+    if(this.seachMode) {
+      this.handleSearchProducts();
+    }else {
+      this.handleListProducts();
+    }
+  }
+  handleSearchProducts() {
+    const keyword = this.route.snapshot.paramMap.get('keyword')!;
+    this.productService.searchProducts(keyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
+  }
+
+  handleListProducts() {
+    const hasCategoryId = this.route.snapshot.paramMap.has('id')!;
     if(hasCategoryId) {
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     }
