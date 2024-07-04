@@ -11,7 +11,15 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductListComponent implements OnInit{
   products: Product[] = [];
   currentCategoryId : number = 1;
+  previousCategoryId: number = 1;
   seachMode : boolean = false;
+
+  //pagination properties
+  pageNumber : number = 1;
+  pageSize : number = 10;
+  totalElements : number = 0;
+
+  previousKeyword : string = "";
 
   //dependency injection
   constructor(private productService : ProductService,
@@ -35,11 +43,19 @@ export class ProductListComponent implements OnInit{
   }
   handleSearchProducts() {
     const keyword = this.route.snapshot.paramMap.get('keyword')!;
-    this.productService.searchProducts(keyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+
+    //if we have different keyword, then set pageNumber to 1
+    if(this.previousKeyword != keyword) {
+      this.pageNumber = 1;
+    }
+
+    //keep track of keyword
+    this.previousKeyword = keyword;
+
+
+    this.productService.searchProductListPaginate(this.pageNumber - 1,
+                                                  this.pageSize,
+                                                  keyword).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -47,9 +63,35 @@ export class ProductListComponent implements OnInit{
     if(hasCategoryId) {
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     }
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {this.products = data;}
-    )
+
+    //if we have different category id, then we have to set pageNumber to 1
+    if(this.previousCategoryId != this.currentCategoryId) {
+      this.pageNumber = 1;
+    }
+    
+    //keep track of category id
+    this.previousCategoryId = this.currentCategoryId;
+
+    //get data using productService API
+    //we minus/plus on pageNumber because Spring Data REST is 0-based pagination
+    //but ng-bootstrap is 1-based
+    this.productService.getProductListPaginate(this.pageNumber - 1, 
+                                               this.pageSize, 
+                                               this.currentCategoryId).subscribe(this.processResult());                             
   }
 
+  updatePageSize(pageSize : string) {
+    this.pageSize = +pageSize;
+    this.pageNumber = 1;
+    this.listProducts();
+  }
+
+  processResult() {
+    return (data : any) => {
+      this.products = data._embedded.products;
+      this.pageNumber = data.page.number + 1;
+      this.pageSize = data.page.size;
+      this.totalElements = data.page.totalElements;
+    }
+  }
 }
