@@ -40,7 +40,7 @@ export class ProductService {
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
 
-  searchProductListPaginate(page : number, size : number, keyword : String) : Observable<GetResponseProducts> {
+  searchProductListPaginate(page : number, size : number, keyword : string) : Observable<GetResponseProducts> {
     const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}`
                     + `&page=${page}&size=${size}`;
     return this.httpClient.get<GetResponseProducts>(searchUrl);

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { CartItem } from '../../common/cart-item';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -9,9 +11,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './product-details.component.css'
 })
 export class ProductDetailsComponent implements OnInit{
+
   product! : Product;
 
-  constructor(private productService : ProductService, private route : ActivatedRoute){}
+  //dependency injection
+  constructor(private productService : ProductService,
+              private route : ActivatedRoute,
+              private cartService : CartService){}
 
   ngOnInit(): void {
     //whenever the param value changes, listProducts() will be called
@@ -27,6 +33,9 @@ export class ProductDetailsComponent implements OnInit{
       }
     )
   }
-  
+  addToCart() {
+    const cartItem : CartItem = new CartItem(this.product);
+    this.cartService.addToCart(cartItem);
+  }
 
 }

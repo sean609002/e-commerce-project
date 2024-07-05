@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { CartItem } from '../../common/cart-item';
 
 @Component({
   selector: 'app-product-list',
@@ -23,7 +25,8 @@ export class ProductListComponent implements OnInit{
 
   //dependency injection
   constructor(private productService : ProductService,
-              private route : ActivatedRoute
+              private route : ActivatedRoute,
+              private cartService : CartService
   ){}
 
   ngOnInit(): void {
@@ -93,5 +96,10 @@ export class ProductListComponent implements OnInit{
       this.pageSize = data.page.size;
       this.totalElements = data.page.totalElements;
     }
+  }
+
+  addToCart(product : Product) {
+    const cartItem : CartItem = new CartItem(product);
+    this.cartService.addToCart(cartItem);
   }
 }

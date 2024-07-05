@@ -1,3 +1,3 @@
 export class ProductCategory {
-    constructor(public id : number,public categoryName: String){}
+    constructor(public id : number,public categoryName: string){}
 }

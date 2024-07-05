@@ -1,11 +1,11 @@
 export class Product {
     constructor(
                 public id : number,
-                public sku : String,
-                public name : String,
-                public description : String,
+                public sku : string,
+                public name : string,
+                public description : string,
                 public unitPrice : number,
-                public imgUrl : String,
+                public imgUrl : string,
                 public active : boolean,
                 public unitsInStock : number,
                 public dateCreated : Date,
