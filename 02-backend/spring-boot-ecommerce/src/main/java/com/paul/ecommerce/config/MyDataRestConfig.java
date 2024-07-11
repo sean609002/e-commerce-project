@@ -1,7 +1,9 @@
 package com.paul.ecommerce.config;
 
+import com.paul.ecommerce.Entity.Country;
 import com.paul.ecommerce.Entity.Product;
 import com.paul.ecommerce.Entity.ProductCategory;
+import com.paul.ecommerce.Entity.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.metamodel.EntityType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +30,18 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] methods = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(methods))
-                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(methods));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(methods))
-                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(methods));
+        disableHttpMethods(Product.class, config, methods);
+        disableHttpMethods(ProductCategory.class, config, methods);
+        disableHttpMethods(Country.class, config, methods);
+        disableHttpMethods(State.class, config, methods);
         exposeIds(config);
+    }
+
+    private static void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] methods) {
+        config.getExposureConfiguration()
+                .forDomainType(theClass)
+                .withItemExposure((metdata, httpMethods) -> httpMethods.disable(methods))
+                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(methods));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
