@@ -33,7 +33,9 @@ export class CartDetailsComponent implements OnInit{
     //however,this.totalPrice and this.totalQuantity has nothing
     //because when cartService sent the events, instance of this class does not exist
     //so we have to call this method to ask carService to send the events
-    this.cartService.computeCartTotals();
+    //original Subject instance in CartService is changed into BehaviorSubject instance
+    //so there's no need to call this method
+    //this.cartService.computeCartTotals();
   }
 
   incrementQuantity(cartItem: CartItem) {

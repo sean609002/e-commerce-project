@@ -4,6 +4,7 @@ import { ShopFormService } from '../../services/shop-form.service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
 import { ShopValidators } from '../../validators/shop-validators';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -22,7 +23,7 @@ export class CheckoutComponent implements OnInit{
   billingAddressStates: State[] = [];
   
   
-  constructor(private formBuilder: FormBuilder, private shopFormService: ShopFormService){}
+  constructor(private formBuilder: FormBuilder, private shopFormService: ShopFormService, private cartService: CartService){}
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -76,6 +77,8 @@ export class CheckoutComponent implements OnInit{
     );
 
     this.detectCardType();
+
+    this.reviewCartDetails();
   }
 
   ngOnSubmit() {
@@ -174,5 +177,18 @@ export class CheckoutComponent implements OnInit{
           cardType?.setValue('American Express');
         }
       });
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalPrice.subscribe(
+      price => {
+        this.totalPrice = price;
+      }
+    );
+    this.cartService.totalQuantity.subscribe(
+      quantity => {
+        this.totalQuantity = quantity;
+      }
+    );
   }
 }
