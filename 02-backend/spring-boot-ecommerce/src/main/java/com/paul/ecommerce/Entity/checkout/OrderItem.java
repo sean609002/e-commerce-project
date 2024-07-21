@@ -1,4 +1,4 @@
-package com.paul.ecommerce.Entity;
+package com.paul.ecommerce.Entity.checkout;
 
 
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.paul.ecommerce.dto;
 
 
-import com.paul.ecommerce.Entity.*;
+import com.paul.ecommerce.Entity.checkout.*;
 import lombok.Data;
 
 import java.util.Set;

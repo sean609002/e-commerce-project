@@ -1,4 +1,4 @@
-package com.paul.ecommerce.Entity;
+package com.paul.ecommerce.Entity.checkout;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,10 +7,10 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "shipping_address")
+@Table(name = "billing_address")
 @Getter
 @Setter
-public class ShippingAddress {
+public class BillingAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,6 @@ public class ShippingAddress {
     @Column(name = "zip_code")
     private String zipCode;
 
-    @OneToMany(mappedBy = "shippingAddress")
-    private Set<Order> shippingAddressOrders;
-
+    @OneToMany(mappedBy = "billingAddress")
+    private Set<Order> billingAddressOrders;
 }

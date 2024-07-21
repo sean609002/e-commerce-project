@@ -1,8 +1,8 @@
 package com.paul.ecommerce.service;
 
-import com.paul.ecommerce.Entity.Customer;
-import com.paul.ecommerce.Entity.Order;
-import com.paul.ecommerce.Entity.OrderItem;
+import com.paul.ecommerce.Entity.checkout.Customer;
+import com.paul.ecommerce.Entity.checkout.Order;
+import com.paul.ecommerce.Entity.checkout.OrderItem;
 import com.paul.ecommerce.dao.CustomerRepository;
 import com.paul.ecommerce.dto.Purchase;
 import com.paul.ecommerce.dto.PurchaseResponse;
