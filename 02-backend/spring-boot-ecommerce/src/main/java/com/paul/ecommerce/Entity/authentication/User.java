@@ -3,6 +3,7 @@ package com.paul.ecommerce.Entity.authentication;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.paul.ecommerce.Entity.checkout.Order;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,29 +12,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "username")
     private String username;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
+    @Column(name = "email")
     private String email;
 
-    @NotBlank
-    @Size(max = 120)
+    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -42,13 +42,26 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Order> orders;
+
     public User() {
     }
 
-    public User(String username, String email, String password) {
+    public User(String firstName, String lastName, String username, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public void addOrder(Order order) {
+        if (orders == null) {
+            orders = new HashSet<>();
+        }
+        orders.add(order);
+        order.setUser(this);
     }
 
 }

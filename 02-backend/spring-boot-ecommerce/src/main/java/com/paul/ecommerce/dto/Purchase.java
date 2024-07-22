@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Data
 public class Purchase {
-    private Customer customer;
+    private Long userId;
     private ShippingAddress shippingAddress;
     private BillingAddress billingAddress;
     private Order order;

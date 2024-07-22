@@ -1,12 +1,13 @@
 package com.paul.ecommerce.service;
 
-import com.paul.ecommerce.Entity.checkout.Customer;
+import com.paul.ecommerce.Entity.authentication.User;
 import com.paul.ecommerce.Entity.checkout.Order;
 import com.paul.ecommerce.Entity.checkout.OrderItem;
-import com.paul.ecommerce.dao.CustomerRepository;
+import com.paul.ecommerce.dao.authentication.UserRepository;
 import com.paul.ecommerce.dto.Purchase;
 import com.paul.ecommerce.dto.PurchaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -14,11 +15,11 @@ import java.util.UUID;
 
 @Service
 public class CheckoutServiceImpl implements CheckoutService{
-    private CustomerRepository customerRepository;
 
+    private UserRepository userRepository;
     @Autowired
-    public CheckoutServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CheckoutServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,10 +36,11 @@ public class CheckoutServiceImpl implements CheckoutService{
         order.setShippingAddress(purchase.getShippingAddress());
         order.setBillingAddress(purchase.getBillingAddress());
         //populate customer with order
-        Customer customer = purchase.getCustomer();
-        customer.addOrder(order);
+        User user = userRepository.findById(purchase.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.addOrder(order);
         //save data into database
-        customerRepository.save(customer);
+        userRepository.save(user);
         return new PurchaseResponse(orderTrackingNumber);
     }
 

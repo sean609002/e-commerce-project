@@ -1,5 +1,6 @@
 package com.paul.ecommerce.Entity.checkout;
 
+import com.paul.ecommerce.Entity.authentication.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,8 +47,8 @@ public class Order {
     private Set<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_address_id")
@@ -62,6 +63,6 @@ public class Order {
             orderItems = new HashSet<OrderItem>();
         }
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        //orderItem.setOrder(this);
     }
 }
