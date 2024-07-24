@@ -1,0 +1,61 @@
+<div class="main-content page-m">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <div class="card card-container p-3">
+                    <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="resize-img mx-auto d-block mb-3" />
+
+                    <form name="form" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()" *ngIf="!isLoggedIn">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" formControlName="username" class="form-control" name="username" required />
+                            <!--error message-->
+                            <div *ngIf="userName?.invalid && (userName?.dirty || userName?.touched)"
+                                class="alert alert-danger mt-1">
+                                <div *ngIf="userName?.errors?.['required'] || userName?.errors?.['notOnlyWhitespace']">
+                                    User Name is Required
+                                </div>
+                                <div *ngIf="userName?.errors?.['minlength']">
+                                    User Name must be at least 3 characters long
+                                </div>
+                                <div *ngIf="userName?.errors?.['maxlength']">
+                                    User Name must be at most 20 characters long
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" formControlName="password" class="form-control" name="password" required />
+                            <!--error message-->
+                            <div *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+                                class="alert alert-danger mt-1">
+                                <div *ngIf="password?.errors?.['required'] || password?.errors?.['notOnlyWhitespace']">
+                                    Password is Required
+                                </div>
+                                <div *ngIf="password?.errors?.['minlength']">
+                                    Password must be at least 6 characters long
+                                </div>
+                                <div *ngIf="password?.errors?.['maxlength']">
+                                    Password must be at most 40 characters long
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </div>
+                        <div class="form-group">
+                            <div class="alert alert-danger" role="alert" *ngIf="isLoginFailed">
+                                Login failed: {{ errorMessage }}
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="alert alert-success  mt-3 p-2 small" *ngIf="isLoggedIn">Logged in as {{ roles }}.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

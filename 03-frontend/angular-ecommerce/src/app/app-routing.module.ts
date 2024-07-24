@@ -4,8 +4,14 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
+  {path: 'login', component: LoginComponent },
+  {path: 'register', component: RegisterComponent },
+  {path: 'profile', component: ProfileComponent },
   {path : 'checkout', component : CheckoutComponent},
   {path : 'cart-details', component : CartDetailsComponent},
   {path : 'products/:id', component : ProductDetailsComponent},

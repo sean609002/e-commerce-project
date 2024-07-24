@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand">
+
+    <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn; else elseBlock">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="register">Sign Up</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="login">Login</a>
+        </li>
+    </ul>
+    <ng-template #elseBlock>
+        <ul class="navbar-nav ml-auto" >
+            <li class="nav-item">
+                <a class="nav-link" routerLink="profile">{{ username }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="products" (click)="logout()">LogOut</a>
+            </li>
+        </ul>
+    </ng-template>
+
+</nav>

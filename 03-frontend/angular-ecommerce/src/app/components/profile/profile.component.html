@@ -1,0 +1,35 @@
+<div class="main-content page-m">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="container" *ngIf="currentUser != undefined;else elseBlock">
+                <header class="jumbotron">
+                <h3>
+                    <strong>{{ currentUser.username }}</strong> Profile
+                </h3>
+                </header>
+                <p>
+                    <strong>First Name:</strong>
+                    {{ currentUser.firstName }}
+                </p>
+
+                <p>
+                    <strong>Last Name:</strong>
+                    {{ currentUser.lastName }}
+                </p>
+
+                <p>
+                <strong>Email:</strong>
+                {{ currentUser.email }}
+                </p>
+
+                <strong>Roles:</strong>
+                <ul *ngFor="let role of currentUser.roles">
+                    <li>{{ role }}</li>
+                </ul>
+            </div>
+            <ng-template #elseBlock>
+                <p>Please login.</p>
+            </ng-template>
+        </div>
+    </div>
+</div>
