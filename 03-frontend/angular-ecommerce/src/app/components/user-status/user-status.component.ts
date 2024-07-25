@@ -16,7 +16,6 @@ export class UserStatusComponent implements OnInit{
   constructor(private storageService: StorageService, private authService: AuthService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log('user-status oninit');
     //訂閱已接收最新logInStatus
     this.storageService.loggedInStatus.subscribe(
       status => {
@@ -35,7 +34,7 @@ export class UserStatusComponent implements OnInit{
     this.location.onUrlChange(
       () => {
         const user = this.storageService.getUser();
-        if(user && !this.username) {
+        if(user && user !== this.username) {
           this.username = user.username;
         }
       }

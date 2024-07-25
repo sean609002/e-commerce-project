@@ -1,35 +1,70 @@
 <div class="main-content page-m">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            <div class="container" *ngIf="currentUser != undefined;else elseBlock">
-                <header class="jumbotron">
-                <h3>
-                    <strong>{{ currentUser.username }}</strong> Profile
-                </h3>
-                </header>
-                <p>
-                    <strong>First Name:</strong>
-                    {{ currentUser.firstName }}
-                </p>
+            <form name="form" [formGroup]="profileFormGroup" *ngIf="!isSuccessful" (ngSubmit)="onSubmit()">
+                <div class="form-group mb-2">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" formControlName="firstName" class="form-control form-control-sm" name="firstName" required />
+                    <div *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)" class="alert alert-danger mt-1 p-2 small">
+                        First Name is Required
+                    </div>
+                </div>
 
-                <p>
-                    <strong>Last Name:</strong>
-                    {{ currentUser.lastName }}
-                </p>
+                <div class="form-group mb-2">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" formControlName="lastName" class="form-control form-control-sm" name="lastName" required />
+                    <div *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)" class="alert alert-danger mt-1 p-2 small">
+                        Last Name is Required
+                    </div>
+                </div>
 
-                <p>
-                <strong>Email:</strong>
-                {{ currentUser.email }}
-                </p>
+                <div class="form-group mb-2">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" formControlName="username" class="form-control form-control-sm" name="username" required />
+                    <div *ngIf="userName?.invalid && (userName?.dirty || userName?.touched)" class="alert alert-danger mt-1 p-2 small">
+                        <div *ngIf="userName?.errors?.['required'] || userName?.errors?.['notOnlyWhitespace']">User Name is Required</div>
+                        <div *ngIf="userName?.errors?.['minlength']">User Name must be at least 3 characters long</div>
+                        <div *ngIf="userName?.errors?.['maxlength']">User Name must be at most 20 characters long</div>
+                    </div>
+                </div>
 
-                <strong>Roles:</strong>
-                <ul *ngFor="let role of currentUser.roles">
-                    <li>{{ role }}</li>
-                </ul>
-            </div>
-            <ng-template #elseBlock>
-                <p>Please login.</p>
-            </ng-template>
+                <div class="form-group mb-2">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" formControlName="email" class="form-control form-control-sm" name="email" required />
+                    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger mt-1 p-2 small">
+                        <div *ngIf="email?.errors?.['required'] || email?.errors?.['notOnlyWhitespace']">Email is Required</div>
+                        <div *ngIf="email?.errors?.['maxlength']">Email must be at most 50 characters long</div>
+                        <div *ngIf="email?.errors?.['pattern']">Email must be a valid email address</div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" formControlName="password" class="form-control form-control-sm" name="password" required />
+                    <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="alert alert-danger mt-1 p-2 small">
+                        <div *ngIf="password?.errors?.['required'] || password?.errors?.['notOnlyWhitespace']">Password is Required</div>
+                        <div *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters long</div>
+                        <div *ngIf="password?.errors?.['maxlength']">Password must be at most 40 characters long</div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="password" class="form-label">Roles</label>
+                    <ul *ngFor="let role of currentUser.roles">
+                        <li>{{ role }}</li>
+                    </ul>
+                 </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Submit</button>
+                </div>
+
+                <div class="alert alert-warning mt-3 p-2 small" *ngIf="isUpdateFailed">
+                    Update failed!<br />{{ errorMessage }}
+                </div>
+            </form>
+            
+            <div class="alert alert-success mt-3 p-2 small" *ngIf="isSuccessful">Your update is successful!</div>
         </div>
     </div>
 </div>

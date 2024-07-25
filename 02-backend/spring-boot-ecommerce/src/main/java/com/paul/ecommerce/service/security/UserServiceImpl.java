@@ -5,6 +5,8 @@ import com.paul.ecommerce.dao.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,5 +25,11 @@ public class UserServiceImpl implements UserService {
     }
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
