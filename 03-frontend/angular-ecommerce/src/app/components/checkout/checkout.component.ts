@@ -12,6 +12,7 @@ import { OrderItem } from '../../common/data-send-to-backend/order-item';
 import { Customer } from '../../common/data-send-to-backend/customer';
 import { Address } from '../../common/data-send-to-backend/address';
 import { Purchase } from '../../common/data-send-to-backend/purchase';
+import { StorageService } from '../../services/member-services/storage.service';
 
 @Component({
   selector: 'app-checkout',
@@ -28,18 +29,21 @@ export class CheckoutComponent implements OnInit{
   countries: Country[] = [];
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
-  
+
+  private user: any;  
   
   constructor(private formBuilder: FormBuilder, private shopFormService: ShopFormService,
               private cartService: CartService, private checkoutService: CheckoutService,
-              private router: Router){}
+              private router: Router, private storageService: StorageService){}
 
   ngOnInit(): void {
+    //取得user，prepopulate the data
+    this.user = this.storageService.getUser();
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: ['', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace]],
-        lastName: ['', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace]],
-        email: ['',[Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')]]
+        firstName: [{value: this.user.firstName, disabled: true}],
+        lastName: [{value: this.user.lastName,  disabled: true}],
+        email: [{value: this.user.email, disabled: true}]
       }),
       shippingAddress : this.formBuilder.group({
         street: ['', [Validators.required, Validators.minLength(2), ShopValidators.notOnlyWhitespace]],
@@ -105,12 +109,12 @@ export class CheckoutComponent implements OnInit{
     }
 
     //set up customer
-    let customer: Customer = this.checkoutFormGroup.get('customer')?.value;
+    //let customer: Customer = this.checkoutFormGroup.get('customer')?.value;
     //set up shippingAddress and billingAddress
     let shippingAddress: Address = this.toAddressProcessing(this.checkoutFormGroup.get('shippingAddress')?.value);
     let billingAddress: Address = this.toAddressProcessing(this.checkoutFormGroup.get('billingAddress')?.value);
     //set up purchase
-    let purchase: Purchase = new Purchase(customer, order, orderItems, shippingAddress, billingAddress);
+    let purchase: Purchase = new Purchase(this.user.id, order, orderItems, shippingAddress, billingAddress);
     //send data to the backend
     this.checkoutService.placeOrder(purchase).subscribe(
       {

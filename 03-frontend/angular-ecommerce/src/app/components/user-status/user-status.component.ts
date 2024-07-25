@@ -1,23 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StorageService } from '../../services/member-services/storage.service';
 import { AuthService } from '../../services/member-services/auth.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-status',
   templateUrl: './user-status.component.html',
   styleUrl: './user-status.component.css'
 })
-export class UserStatusComponent implements OnInit{
+export class UserStatusComponent implements OnInit, OnDestroy{
   isLoggedIn = false;
   username?: string;
+  private logInSubscription?: Subscription;
 
   constructor(private storageService: StorageService, private authService: AuthService, private location: Location, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     //訂閱已接收最新logInStatus
-    this.storageService.loggedInStatus.subscribe(
+    this.logInSubscription = this.storageService.loggedInStatus.subscribe(
       status => {
         this.isLoggedIn = status;
       }
@@ -53,5 +55,9 @@ export class UserStatusComponent implements OnInit{
         console.log(err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.logInSubscription?.unsubscribe();
   }
 }

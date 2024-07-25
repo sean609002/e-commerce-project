@@ -18,6 +18,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserStatusComponent } from './components/user-status/user-status.component';
+import { ConditionalRouteDirective } from './directives/conditional-route.directive';
 
 
 
@@ -34,7 +35,8 @@ import { UserStatusComponent } from './components/user-status/user-status.compon
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    UserStatusComponent
+    UserStatusComponent,
+    ConditionalRouteDirective
   ],
   imports: [
     BrowserModule,

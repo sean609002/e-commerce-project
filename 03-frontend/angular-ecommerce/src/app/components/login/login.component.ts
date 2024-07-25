@@ -1,28 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../services/member-services/auth.service';
 import { StorageService } from '../../services/member-services/storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ShopValidators } from '../../validators/shop-validators';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy{
   loginFormGroup!: FormGroup;
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  private logInSubscription?: Subscription;
   
 
   constructor(private authService: AuthService, private storageService: StorageService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     //訂閱已接收最新的logInStatus
-    this.storageService.loggedInStatus.subscribe(
+    this.logInSubscription = this.storageService.loggedInStatus.subscribe(
       status => {
         this.isLoggedIn = status;
       }
@@ -70,6 +72,9 @@ export class LoginComponent implements OnInit{
     });
   }
 
+  ngOnDestroy(): void {
+    this.logInSubscription?.unsubscribe();
+  }
 
   get userName() {return this.loginFormGroup?.get('username');}
   get password() {return this.loginFormGroup?.get('password');}
