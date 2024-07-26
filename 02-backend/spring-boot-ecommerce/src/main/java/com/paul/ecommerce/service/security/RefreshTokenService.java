@@ -15,5 +15,5 @@ public interface RefreshTokenService {
 
     public RefreshToken verifyExpiration(RefreshToken token);
 
-    public int deleteByUserId(Long userId);
+    public void deleteByUserId(Long userId);
 }

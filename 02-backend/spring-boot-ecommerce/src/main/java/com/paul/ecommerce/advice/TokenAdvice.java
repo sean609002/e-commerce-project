@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Date;
 
 @RestControllerAdvice
-public class AuthControllerAdvice {
+public class TokenAdvice {
     @ExceptionHandler(value = TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorMessage handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {

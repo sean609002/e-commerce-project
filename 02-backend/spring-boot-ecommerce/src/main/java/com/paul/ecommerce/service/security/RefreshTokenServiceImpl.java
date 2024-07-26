@@ -5,9 +5,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.paul.ecommerce.Entity.authentication.RefreshToken;
+import com.paul.ecommerce.Entity.authentication.User;
 import com.paul.ecommerce.dao.authentication.RefreshTokenRepository;
 import com.paul.ecommerce.dao.authentication.UserRepository;
 import com.paul.ecommerce.exception.TokenRefreshException;
+import com.paul.ecommerce.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -53,7 +55,13 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Transactional
-    public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+    public void deleteByUserId(Long userId) {
+        boolean ifUserExists = userRepository.findById(userId).isPresent();
+        if (ifUserExists) {
+            refreshTokenRepository.deleteByUserId(userId);
+        } else {
+            throw new UserNotFoundException("user with id:"+ userId + " is not found");
+        }
+        //return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
     }
 }

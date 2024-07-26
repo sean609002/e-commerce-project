@@ -6,8 +6,8 @@ import com.paul.ecommerce.Entity.checkout.OrderItem;
 import com.paul.ecommerce.dao.authentication.UserRepository;
 import com.paul.ecommerce.dto.Purchase;
 import com.paul.ecommerce.dto.PurchaseResponse;
+import com.paul.ecommerce.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -37,7 +37,7 @@ public class CheckoutServiceImpl implements CheckoutService{
         order.setBillingAddress(purchase.getBillingAddress());
         //populate customer with order
         User user = userRepository.findById(purchase.getUserId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         user.addOrder(order);
         //save data into database
         userRepository.save(user);

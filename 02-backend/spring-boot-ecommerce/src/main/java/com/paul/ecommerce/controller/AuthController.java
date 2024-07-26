@@ -70,6 +70,9 @@ public class AuthController {
         //根據authentication object生成jwt token
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
+        //in case people didn't sign out, we delete refresh token if exists
+        refreshTokenService.deleteByUserId(userDetails.getId());
+
         //生成refresh token後生成refresh token cookie
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
         ResponseCookie jwtRefreshCookie = jwtUtils.generateRefreshJwtCookie(refreshToken.getToken());
