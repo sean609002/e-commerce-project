@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StorageService } from '../../services/member-services/storage.service';
 import { AuthService } from '../../services/member-services/auth.service';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { RefreshTokenService } from '../../services/member-services/refresh-token.service';
 
 @Component({
   selector: 'app-user-status',
@@ -14,8 +15,11 @@ export class UserStatusComponent implements OnInit, OnDestroy{
   isLoggedIn = false;
   username?: string;
   private logInSubscription?: Subscription;
+  private tokenExpireSubscription?: Subscription;
 
-  constructor(private storageService: StorageService, private authService: AuthService, private location: Location, private route: ActivatedRoute) { }
+  constructor(private storageService: StorageService, private authService: AuthService, 
+              private location: Location, private route: ActivatedRoute, private refreshTokenService: RefreshTokenService,
+              private router: Router) { }
 
   ngOnInit(): void {
     //訂閱已接收最新logInStatus
@@ -41,6 +45,12 @@ export class UserStatusComponent implements OnInit, OnDestroy{
         }
       }
     );
+    //refresh token過期，則登出
+    this.tokenExpireSubscription = this.refreshTokenService.on('logout', () => {
+      alert('session expired. please login');
+      this.router.navigateByUrl('/products');
+      this.logout();
+    });
   }
 
   logout(): void {
@@ -59,5 +69,6 @@ export class UserStatusComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void {
     this.logInSubscription?.unsubscribe();
+    this.tokenExpireSubscription?.unsubscribe();
   }
 }

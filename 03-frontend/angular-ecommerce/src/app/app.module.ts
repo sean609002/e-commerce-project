@@ -45,7 +45,7 @@ import { ConditionalRouteDirective } from './directives/conditional-route.direct
     NgbModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

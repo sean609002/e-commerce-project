@@ -52,4 +52,9 @@ export class AuthService {
     const signOutUrl = this.AUTH_API + 'signout';
     return this.httpClient.post(signOutUrl, { }, this.getHttpOptions(true));
   }
+
+  refreshToken() {
+    const  refreshTokenUrl = this.AUTH_API + 'refreshtoken';
+    return this.httpClient.post(refreshTokenUrl, { }, this.getHttpOptions(true));
+  }
 }

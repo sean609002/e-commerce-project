@@ -63,6 +63,6 @@ public class Order {
             orderItems = new HashSet<OrderItem>();
         }
         orderItems.add(orderItem);
-        //orderItem.setOrder(this);
+        orderItem.setOrder(this);
     }
 }
