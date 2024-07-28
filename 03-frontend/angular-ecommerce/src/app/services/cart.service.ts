@@ -9,23 +9,23 @@ export class CartService {
   cartItems: CartItem[] = [];
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
-  
-  constructor() { }
+  private storage: Storage = localStorage;
+
+  constructor() { 
+    const data = this.storage.getItem('cartItems');
+    if(data) {
+      this.cartItems = JSON.parse(data);
+      this.computeCartTotals();
+    }
+  }
 
   addToCart(cartItem: CartItem) {
     let alreadyExistInCart: boolean = false;
     let existingCartItem: CartItem | undefined = undefined;
     //check if there's a carItem whose id is the same as the cartItem passed in
     if(this.cartItems.length > 0) {
-      /*
-      for(let tempCartItem of this.cartItems) {
-        if(tempCartItem.id == cartItem.id) {
-          existingCartItem = tempCartItem;
-          break;
-        }
-      }*/
-      /*make use of instance method called 'find' that each arrays has 
-        to substitute the code commented out above*/
+      /*make use of instance method called 'find' that each arrays has */
+      /*for each items, find function will return one if the call back function returns true*/
       existingCartItem = this.cartItems.find(theCartItem => theCartItem.id == cartItem.id);
       
       //if existingCartItem exists, we set alreadyExistInCart to true
@@ -53,6 +53,11 @@ export class CartService {
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
     //this.logCartItems(totalPriceValue, totalQuantityValue);
+    this.persistCartItems();
+  }
+
+  persistCartItems() {
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
   logCartItems(totalPrice: number, totalQuantity: number) {
@@ -81,4 +86,5 @@ export class CartService {
       this.computeCartTotals();
     }
   }
+
 }
