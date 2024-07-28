@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(value = "http://localhost:4200", allowCredentials="true")
+
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutController {
