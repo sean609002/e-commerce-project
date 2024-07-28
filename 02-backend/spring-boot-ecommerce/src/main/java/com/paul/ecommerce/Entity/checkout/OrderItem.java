@@ -1,6 +1,7 @@
 package com.paul.ecommerce.Entity.checkout;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class OrderItem {
     @Column(name = "product_id")
     private int productId;
 
+    @JsonBackReference(value = "order-orderItem")
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

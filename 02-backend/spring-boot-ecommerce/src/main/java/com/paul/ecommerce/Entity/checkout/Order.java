@@ -1,5 +1,7 @@
 package com.paul.ecommerce.Entity.checkout;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.paul.ecommerce.Entity.authentication.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -43,17 +45,21 @@ public class Order {
     @UpdateTimestamp
     private Date lastUpdated;
 
+    @JsonManagedReference(value = "order-orderItem")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<OrderItem> orderItems;
 
+    @JsonBackReference(value = "user-order")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonBackReference(value = "shippingAddress-order")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipping_address_id")
     private ShippingAddress shippingAddress;
 
+    @JsonBackReference(value = "billingAddress-order")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_address_id")
     private BillingAddress billingAddress;

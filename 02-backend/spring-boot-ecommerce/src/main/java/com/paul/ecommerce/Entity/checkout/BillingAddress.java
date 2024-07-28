@@ -1,5 +1,6 @@
 package com.paul.ecommerce.Entity.checkout;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class BillingAddress {
     @Column(name = "zip_code")
     private String zipCode;
 
+    @JsonManagedReference(value = "billingAddress-order")
     @OneToMany(mappedBy = "billingAddress")
     private Set<Order> billingAddressOrders;
 }
