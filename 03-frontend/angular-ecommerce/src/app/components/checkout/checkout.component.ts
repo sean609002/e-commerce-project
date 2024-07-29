@@ -248,6 +248,8 @@ export class CheckoutComponent implements OnInit{
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
     this.cartService.totalQuantity.next(0);
+    //reset local storage cart data
+    this.cartService.clearSessionCartItems();
     //reset formgroup
     this.checkoutFormGroup.reset();
     //redirect to the homepage

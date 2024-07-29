@@ -60,6 +60,10 @@ export class CartService {
     this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
   }
 
+  clearSessionCartItems() {
+    this.storage.removeItem('cartItems');
+  }
+
   logCartItems(totalPrice: number, totalQuantity: number) {
     console.log("content of the cart");
     for(let tempCartItem of this.cartItems) {
