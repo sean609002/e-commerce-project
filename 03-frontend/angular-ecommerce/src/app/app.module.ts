@@ -19,6 +19,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserStatusComponent } from './components/user-status/user-status.component';
 import { ConditionalRouteDirective } from './directives/conditional-route.directive';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 
 
@@ -36,7 +37,8 @@ import { ConditionalRouteDirective } from './directives/conditional-route.direct
     LoginComponent,
     ProfileComponent,
     UserStatusComponent,
-    ConditionalRouteDirective
+    ConditionalRouteDirective,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

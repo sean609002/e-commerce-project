@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public HttpEntity<PagedModel<Order>> getOrders(@RequestParam String email,
                                                    @RequestParam(required = false) Integer page,
                                                    @RequestParam(required = false) Integer size,
@@ -62,7 +62,7 @@ public class UserController {
         //設置默認值
         int pageNumber = (page != null) ? page : 0;
         int pageSize = (size != null) ? size : 10;
-        String mySort = (sort == null || sort.equals("")) ? "id,asc" : sort;
+        String mySort = (sort == null || sort.equals("")) ? "dateCreated,desc" : sort;
 
         String[] splitSort = StringUtils.split(mySort, ",");
         Pageable pageable = null;
