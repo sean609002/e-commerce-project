@@ -2,12 +2,13 @@ import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpResponse } from 
 import { Injectable } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
 import { OrderHistory } from '../../common/order-history';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderHistoryService {
-  private baseUrl = 'http://localhost:8080/api/user';
+  private baseUrl = environment.baseUrl + '/user';
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

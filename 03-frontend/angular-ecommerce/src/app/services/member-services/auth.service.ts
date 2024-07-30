@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private AUTH_API = 'http://localhost:8080/api/auth/';
+  private AuthUrl = environment.baseUrl + '/auth/';
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,7 +23,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<any> {
-    const signInUrl = this.AUTH_API + 'signin';
+    const signInUrl = this.AuthUrl + 'signin';
     return this.httpClient.post(
       signInUrl,
       {
@@ -34,7 +35,7 @@ export class AuthService {
   }
 
   register(firstName: string, lastName: string, username: string, email: string, password: string): Observable<any> {
-    const signUpUrl = this.AUTH_API + 'signup';
+    const signUpUrl = this.AuthUrl + 'signup';
     return this.httpClient.post(
       signUpUrl,
       {
@@ -49,12 +50,12 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    const signOutUrl = this.AUTH_API + 'signout';
+    const signOutUrl = this.AuthUrl + 'signout';
     return this.httpClient.post(signOutUrl, { }, this.getHttpOptions(true));
   }
 
   refreshToken() {
-    const  refreshTokenUrl = this.AUTH_API + 'refreshtoken';
+    const  refreshTokenUrl = this.AuthUrl + 'refreshtoken';
     return this.httpClient.post(refreshTokenUrl, { }, this.getHttpOptions(true));
   }
 }
