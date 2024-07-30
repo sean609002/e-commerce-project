@@ -65,7 +65,7 @@ public class Order {
     private BillingAddress billingAddress;
 
     public void addOrderItem(OrderItem orderItem) {
-        if(orderItems == null) {
+        if (orderItems == null) {
             orderItems = new HashSet<OrderItem>();
         }
         orderItems.add(orderItem);

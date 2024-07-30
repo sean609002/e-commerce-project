@@ -6,9 +6,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.paul.ecommerce.Entity.checkout.Order;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 

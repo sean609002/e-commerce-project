@@ -2,13 +2,12 @@ package com.paul.ecommerce.service;
 
 import com.paul.ecommerce.Entity.checkout.Order;
 import com.paul.ecommerce.dao.OrderRepository;
-import com.paul.ecommerce.dao.authentication.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 

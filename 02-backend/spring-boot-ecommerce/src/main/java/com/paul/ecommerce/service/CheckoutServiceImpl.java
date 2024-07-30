@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class CheckoutServiceImpl implements CheckoutService{
+public class CheckoutServiceImpl implements CheckoutService {
 
     private UserRepository userRepository;
     @Autowired
@@ -31,7 +31,9 @@ public class CheckoutServiceImpl implements CheckoutService{
 
         //populate order with orderItems
         Set<OrderItem> orderItems = purchase.getOrderItems();
-        for (OrderItem orderItem : orderItems) {order.addOrderItem(orderItem);}
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
         //populate order with shippingAddress and billingAddress
         order.setShippingAddress(purchase.getShippingAddress());
         order.setBillingAddress(purchase.getBillingAddress());
