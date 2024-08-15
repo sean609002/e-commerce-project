@@ -25,6 +25,9 @@ PaulLiu-Ecommerce
              jjwt-impl
              jjwt-jackson
              commons-lang3
+
+## 專案架構
+![Ecommerce Project Diagram-2](https://github.com/user-attachments/assets/2edcf9d6-555b-4e20-b746-b20ff3c6c34d)
 ## 主要功能
 1. [搜索商品](https://youtu.be/jvHGoFVlLxg)![image](https://github.com/user-attachments/assets/d80757e4-8d43-4064-a3fd-5e1c82933261)
 2. [根據不同的商品類型搜索](https://youtu.be/UUo6jktFrBo)![image](https://github.com/user-attachments/assets/2b651568-7d07-4d29-a2c7-78f27029f6f9)
