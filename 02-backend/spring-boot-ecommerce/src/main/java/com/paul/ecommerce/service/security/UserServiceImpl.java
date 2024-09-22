@@ -4,6 +4,7 @@ import com.paul.ecommerce.Entity.authentication.User;
 import com.paul.ecommerce.dao.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,6 +22,8 @@ public class UserServiceImpl implements UserService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    @Transactional
     public void save(User user) {
         userRepository.save(user);
     }

@@ -13,6 +13,7 @@ import com.paul.ecommerce.dto.PurchaseResponse;
 import com.paul.ecommerce.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
@@ -33,6 +34,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         this.billAddressRepository = billAddressRepository;
     }
 
+    @Transactional
     @Override
     public PurchaseResponse placeOrder(Purchase purchase) {
         Order order = purchase.getOrder();
