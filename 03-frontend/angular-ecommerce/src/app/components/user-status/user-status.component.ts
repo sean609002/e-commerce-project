@@ -40,7 +40,7 @@ export class UserStatusComponent implements OnInit, OnDestroy{
     this.location.onUrlChange(
       () => {
         const user = this.storageService.getUser();
-        if(user && user !== this.username) {
+        if(user) {
           this.username = user.username;
         }
       }
