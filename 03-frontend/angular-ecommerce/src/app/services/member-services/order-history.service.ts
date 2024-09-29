@@ -27,4 +27,11 @@ export class OrderHistoryService {
     const orderHistoryUrl = `${this.baseUrl}/orders?email=${email}`;
     return this.httpClient.get<any>(orderHistoryUrl, this.getHttpOptions(true));
   }
+
+  getOrderHistoryPaginate(page: number, size: number, email: string): Observable<any> {
+    const orderHistoryPaginateUrl = `${this.baseUrl}/orders?email=${email}`
+                                    + `&page=${page}&size=${size}`;
+    return this.httpClient.get<any>(orderHistoryPaginateUrl, this.getHttpOptions(true));
+  }
 }
+
