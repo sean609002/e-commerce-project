@@ -8,11 +8,13 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent },
   {path: 'register', component: RegisterComponent },
   {path: 'profile', component: ProfileComponent },
+  {path: 'order-details/:id', component: OrderDetailsComponent },
   {path: 'order-history', component: OrderHistoryComponent },
   {path : 'checkout', component : CheckoutComponent},
   {path : 'cart-details', component : CartDetailsComponent},

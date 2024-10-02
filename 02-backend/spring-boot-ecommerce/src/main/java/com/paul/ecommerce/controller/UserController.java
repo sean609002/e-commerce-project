@@ -4,10 +4,12 @@ import com.paul.ecommerce.Entity.authentication.RefreshToken;
 import com.paul.ecommerce.Entity.authentication.Role;
 import com.paul.ecommerce.Entity.authentication.User;
 import com.paul.ecommerce.Entity.checkout.Order;
+import com.paul.ecommerce.Entity.checkout.OrderItem;
 import com.paul.ecommerce.dto.authentication.MessageResponse;
 import com.paul.ecommerce.dto.authentication.UserInfoRequest;
 import com.paul.ecommerce.dto.authentication.UserInfoResponse;
 import com.paul.ecommerce.jwt.JwtUtils;
+import com.paul.ecommerce.service.OrderItemService;
 import com.paul.ecommerce.service.OrderService;
 import com.paul.ecommerce.service.security.RefreshTokenService;
 import com.paul.ecommerce.service.security.UserService;
@@ -40,16 +42,18 @@ public class UserController {
     private final JwtUtils jwtUtils;
     private final RefreshTokenService refreshTokenService;
     private final OrderService orderService;
+    private final OrderItemService orderItemService;
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder,
                           JwtUtils jwtUtils, RefreshTokenService refreshTokenService,
-                          OrderService orderService) {
+                          OrderService orderService, OrderItemService orderItemService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.refreshTokenService = refreshTokenService;
         this.orderService = orderService;
+        this.orderItemService = orderItemService;
     }
 
     @GetMapping("/orders")
@@ -84,6 +88,40 @@ public class UserController {
         Page<Order> ordersByUserEmail = orderService.findOrdersByUserEmail(email, pageable);
 
         return ResponseEntity.ok(assembler.toModel(ordersByUserEmail));
+    }
+
+    @GetMapping("/order/orderItem")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public HttpEntity<PagedModel<OrderItem>> getOrderItem(@RequestParam Long id,
+                                                          @RequestParam(required = false) Integer page,
+                                                          @RequestParam(required = false) Integer size,
+                                                          @RequestParam(required = false) String sort,
+                                                          PagedResourcesAssembler assembler) {
+        //設置默認值
+        int pageNumber = (page != null) ? page : 0;
+        int pageSize = (size != null) ? size : 10;
+        String mySort = (sort == null || sort.equals("")) ? "name,asc" : sort;
+
+        String[] splitSort = StringUtils.split(mySort, ",");
+        Pageable pageable = null;
+        if (splitSort.length == 2) {
+            String property = splitSort[0];
+            String direction = splitSort[1].toLowerCase();
+
+            Sort.Direction sortDirection = direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortDirection, property));
+
+
+        }
+
+        if(splitSort.length == 1) {
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(splitSort[0]).ascending());
+        }
+
+        Page<OrderItem> orderItemsByOrderId = orderItemService.findByOrderId(id, pageable);
+
+        return ResponseEntity.ok(assembler.toModel(orderItemsByOrderId));
     }
 
     @PutMapping

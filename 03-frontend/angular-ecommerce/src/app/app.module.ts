@@ -20,6 +20,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { UserStatusComponent } from './components/user-status/user-status.component';
 import { ConditionalRouteDirective } from './directives/conditional-route.directive';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
+import { OrderDetailsComponent } from './components/order-details/order-details.component';
 
 
 
@@ -38,7 +39,8 @@ import { OrderHistoryComponent } from './components/order-history/order-history.
     ProfileComponent,
     UserStatusComponent,
     ConditionalRouteDirective,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ package com.paul.ecommerce.Entity.checkout;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +18,14 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "quantity")
     private int quantity;
