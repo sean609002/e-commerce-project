@@ -20,7 +20,9 @@ export class ProfileComponent implements OnInit{
   constructor(private storageService: StorageService, private userService: UserService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    this.currentUser = this.storageService.getUser();
+    this.storageService.user.subscribe((data) => {
+      this.currentUser = data;
+    });
     this.profileFormGroup = this.formBuilder.group({
       firstName: [this.currentUser.firstName,[Validators.required, ShopValidators.notOnlyWhitespace]],
       lastName: [this.currentUser.lastName,[Validators.required, ShopValidators.notOnlyWhitespace]],
@@ -45,6 +47,7 @@ export class ProfileComponent implements OnInit{
         this.isSuccessful = true;
         this.isUpdateFailed = false;
         this.storageService.saveUser(data);
+        this.storageService.userEmit();
         new Promise(resolve => setTimeout(resolve, 1000))
             .then(() => {
               console.log('Navigating to products page...');

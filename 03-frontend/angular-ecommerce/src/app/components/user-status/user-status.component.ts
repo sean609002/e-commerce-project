@@ -12,39 +12,19 @@ import { RefreshTokenService } from '../../services/member-services/refresh-toke
   styleUrl: './user-status.component.css'
 })
 export class UserStatusComponent implements OnInit, OnDestroy{
-  isLoggedIn = false;
-  username?: string;
-  private logInSubscription?: Subscription;
+  private userSubscription?: Subscription;
   private tokenExpireSubscription?: Subscription;
+  user: any;
 
   constructor(private storageService: StorageService, private authService: AuthService, 
               private location: Location, private route: ActivatedRoute, private refreshTokenService: RefreshTokenService,
               private router: Router) { }
 
   ngOnInit(): void {
-    //訂閱已接收最新logInStatus
-    this.logInSubscription = this.storageService.loggedInStatus.subscribe(
-      status => {
-        this.isLoggedIn = status;
-      }
-    );
-    //觸發subject event
-    this.storageService.isLoggedIn();
-    
-    //如果已經登入，就設置username
-    if (this.isLoggedIn) {
-      const user = this.storageService.getUser();
-      this.username = user.username;
-    }
-    //如果還沒登入，使用者要先登入，而我們透過監聽URL變化來設置username
-    this.location.onUrlChange(
-      () => {
-        const user = this.storageService.getUser();
-        if(user) {
-          this.username = user.username;
-        }
-      }
-    );
+    this.userSubscription = this.storageService.user.subscribe((data) => {
+      this.user = data;
+    });
+
     //refresh token過期，則登出
     this.tokenExpireSubscription = this.refreshTokenService.on('logout', () => {
       alert('session expired. please login');
@@ -68,7 +48,7 @@ export class UserStatusComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.logInSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
     this.tokenExpireSubscription?.unsubscribe();
   }
 }

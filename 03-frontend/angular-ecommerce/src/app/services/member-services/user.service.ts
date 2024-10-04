@@ -36,4 +36,8 @@ export class UserService {
       this.getHttpOptions(true)
     );
   }
+
+  getUserByAccessToken(): Observable<any> {
+    return this.httpClient.get<any>(this.userUrl, this.getHttpOptions(true));
+  }
 }

@@ -13,6 +13,7 @@ import com.paul.ecommerce.service.OrderItemService;
 import com.paul.ecommerce.service.OrderService;
 import com.paul.ecommerce.service.security.RefreshTokenService;
 import com.paul.ecommerce.service.security.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -175,5 +180,21 @@ public class UserController {
         user.setUsername(userInfoRequest.getUsername());
         user.setEmail(userInfoRequest.getEmail());
         user.setPassword(userInfoRequest.getPassword());
+    }
+
+    //透過cookie的jwt token取得user
+    @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<UserInfoResponse> getUser(HttpServletRequest req) {
+        String jwt = jwtUtils.getJwtFromCookies(req);
+        String userName = jwtUtils.getUserNameFromJwtToken(jwt);
+        User user = userService.findByUserName(userName).orElseThrow(() -> new UsernameNotFoundException(userName + " not found"));
+        List<String> roles = new ArrayList<>();
+        for(Role role: user.getRoles()) {
+            roles.add(role.toString());
+        }
+        UserInfoResponse resp = new UserInfoResponse(user.getId(), user.getFirstName(),
+                user.getLastName(), user.getUsername(),user.getEmail(), roles);
+        return ResponseEntity.ok().body(resp);
     }
 }

@@ -58,4 +58,10 @@ export class AuthService {
     const  refreshTokenUrl = this.AuthUrl + 'refreshtoken';
     return this.httpClient.post(refreshTokenUrl, { }, this.getHttpOptions(true));
   }
+
+  getTokenByQueryString(acc: string, ref: string): Observable<any> {
+    const  getTokenByQueryStringUrl = `${this.AuthUrl}token?acc=${acc}&ref=${ref}`;
+    return this.httpClient.get<any>(getTokenByQueryStringUrl, this.getHttpOptions(true));
+  }
+  
 }

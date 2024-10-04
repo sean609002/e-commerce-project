@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/checkout")
 public class CheckoutController {
-    CheckoutService checkoutService;
+    private final CheckoutService checkoutService;
 
     @Autowired
     public CheckoutController(CheckoutService checkoutService) {

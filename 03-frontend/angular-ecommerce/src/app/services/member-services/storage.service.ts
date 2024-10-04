@@ -6,17 +6,21 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class StorageService {
   private USER_KEY = 'auth-user';
-  loggedInStatus = new BehaviorSubject<boolean>(false);
+  user = new BehaviorSubject<any>(undefined);
   constructor() {}
 
   clean(): void {
     window.sessionStorage.clear();
-    this.isLoggedIn();
+    this.userEmit();
   }
 
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(this.USER_KEY);
     window.sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+  }
+
+  public userEmit(): any {
+    this.user.next(this.getUser());
   }
 
   public getUser(): any {
@@ -26,15 +30,6 @@ export class StorageService {
       return JSON.parse(user);
     }
 
-    return {};
-  }
-
-  public isLoggedIn() {
-    const user = window.sessionStorage.getItem(this.USER_KEY);
-    if (user) {
-      this.loggedInStatus.next(true);
-    } else {
-      this.loggedInStatus.next(false);
-    }
+    return undefined;
   }
 }

@@ -21,7 +21,10 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   handleOrderHistory() {
-    const email = this.storageService.getUser().email;
+    let email;
+    this.storageService.user.subscribe((data) => {
+      email = data.email;
+    });
     if(email) {
       this.orderHistoryService.getOrderHistoryPaginate(this.pageNumber - 1, this.pageSize, email).subscribe(
         data => {

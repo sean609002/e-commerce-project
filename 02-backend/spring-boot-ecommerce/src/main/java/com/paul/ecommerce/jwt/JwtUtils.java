@@ -62,6 +62,10 @@ public class JwtUtils {
         return generateCookie(jwtCookie, jwt, "/api");
     }
 
+    public ResponseCookie generateJwtCookie(String jwt) {
+        return generateCookie(jwtCookie, jwt, "/api");
+    }
+
     public ResponseCookie generateRefreshJwtCookie(String refreshToken) {
         return generateCookie(jwtRefreshCookie, refreshToken, "/api/auth/refreshtoken");
     }

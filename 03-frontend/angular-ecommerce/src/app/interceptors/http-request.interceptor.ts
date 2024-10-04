@@ -9,14 +9,13 @@ import { RefreshTokenService } from '../services/member-services/refresh-token.s
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor{
   private isRefreshing = false;
-  private isLoggedIn!: boolean;
-  private logInSubscription!: Subscription;
+  private user!: any;
 
   constructor(private storageService: StorageService, private authService: AuthService, 
               private refreshTokenService: RefreshTokenService) {
-    this.logInSubscription = this.storageService.loggedInStatus.subscribe(
-      status => {
-        this.isLoggedIn = status;
+    this.storageService.user.subscribe(
+      user => {
+        this.user = user;
       }
     );
   }
@@ -37,7 +36,7 @@ export class HttpRequestInterceptor implements HttpInterceptor{
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
-      if (this.isLoggedIn) {
+      if (this.user != undefined) {
         return this.authService.refreshToken().pipe(
           switchMap(() => {
             console.log('successfully refresh access token');

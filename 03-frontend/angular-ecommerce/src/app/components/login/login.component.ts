@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment.development';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../services/member-services/auth.service';
 import { StorageService } from '../../services/member-services/storage.service';
@@ -13,28 +14,18 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy{
   loginFormGroup!: FormGroup;
-  isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
-  private logInSubscription?: Subscription;
-  
+  private userSubscription?: Subscription;
+  authUrl = environment.oauthUrl;
+  user: any;
 
   constructor(private authService: AuthService, private storageService: StorageService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    //訂閱已接收最新的logInStatus
-    this.logInSubscription = this.storageService.loggedInStatus.subscribe(
-      status => {
-        this.isLoggedIn = status;
-      }
-    );
-    //觸發subject event
-    this.storageService.isLoggedIn();
-
-    if (this.isLoggedIn) {
-      this.roles = this.storageService.getUser().roles;
-    }
+    this.userSubscription = this.storageService.user.subscribe((data) => {
+      this.user = data;
+    });
 
     this.loginFormGroup = this.formBuilder.group({
       username: ['',[Validators.required, ShopValidators.notOnlyWhitespace, Validators.minLength(3), Validators.maxLength(20)]],
@@ -57,8 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy{
 
         this.isLoginFailed = false;
         //觸發subject event
-        this.storageService.isLoggedIn();
-        this.roles = this.storageService.getUser().roles;
+        this.storageService.userEmit();
         new Promise(resolve => setTimeout(resolve, 1000))
             .then(() => {
               console.log('Navigating to products page...');
@@ -73,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.logInSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
   }
 
   get userName() {return this.loginFormGroup?.get('username');}

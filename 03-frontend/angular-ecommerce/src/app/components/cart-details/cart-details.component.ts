@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartItem } from '../../common/cart-item';
 import { CartService } from '../../services/cart.service';
 import { Subscription } from 'rxjs';
+import { StorageService } from '../../services/member-services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-details',
@@ -14,11 +16,24 @@ export class CartDetailsComponent implements OnInit, OnDestroy{
   totalQuantity : number = 0;
   private totalPriceSubscription?: Subscription;
   private totalQuantitySubscription?: Subscription;
+  user: any;
 
-  constructor(private cartService : CartService){}
+  constructor(private router:Router, private cartService : CartService, private storageService: StorageService){}
 
   ngOnInit(): void {
+    this.storageService.user.subscribe(user => {
+      this.user = user;
+    });
     this.listCartDetails();
+  }
+
+  onClick() {
+    if (this.user != undefined) {
+      this.router.navigate(['/checkout']);
+    } else {
+      alert('請先登錄以繼續操作');
+      this.router.navigate(['/login']);
+    }
   }
 
   listCartDetails() {

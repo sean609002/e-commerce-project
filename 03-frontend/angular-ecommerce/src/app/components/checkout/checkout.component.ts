@@ -38,7 +38,9 @@ export class CheckoutComponent implements OnInit{
 
   ngOnInit(): void {
     //取得user，prepopulate the data
-    this.user = this.storageService.getUser();
+    this.storageService.user.subscribe((data) => {
+      this.user = data;
+    });
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: [{value: this.user.firstName, disabled: true}],
@@ -150,7 +152,6 @@ export class CheckoutComponent implements OnInit{
     const currentYear: number = new Date().getFullYear();
     const selectedYear: number = Number(creditCardFormGroup!.value.expirationYear);
 
-
     let startMonth: number;
     if(currentYear == selectedYear) {
       startMonth = new Date().getMonth() + 1;
@@ -161,6 +162,8 @@ export class CheckoutComponent implements OnInit{
     this.shopFormService.getCreditCardMonths(startMonth).subscribe(
       data => {
         this.creditCardMonths = data;
+        //set default month
+        creditCardFormGroup?.get('expirationMonth')?.setValue(startMonth);
     });
   }
 

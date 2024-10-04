@@ -18,9 +18,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { UserStatusComponent } from './components/user-status/user-status.component';
-import { ConditionalRouteDirective } from './directives/conditional-route.directive';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
+import { OauthRedirectComponent } from './components/oauth-redirect/oauth-redirect.component';
 
 
 
@@ -38,9 +38,9 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
     LoginComponent,
     ProfileComponent,
     UserStatusComponent,
-    ConditionalRouteDirective,
     OrderHistoryComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    OauthRedirectComponent
   ],
   imports: [
     BrowserModule,

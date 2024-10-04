@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../common/product';
 import { ProductService } from '../../services/product.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../common/cart-item';
 
@@ -14,7 +14,6 @@ export class ProductListComponent implements OnInit{
   products: Product[] = [];
   currentCategoryId : number = 1;
   previousCategoryId: number = 1;
-  seachMode : boolean = false;
 
   //pagination properties
   pageNumber : number = 1;
@@ -37,13 +36,13 @@ export class ProductListComponent implements OnInit{
   }
 
   listProducts() {
-    this.seachMode = this.route.snapshot.paramMap.has('keyword')!
-    if(this.seachMode) {
+    if(this.route.snapshot.paramMap.has('keyword')!) {
       this.handleSearchProducts();
-    }else {
+    } else {
       this.handleListProducts();
     }
   }
+
   handleSearchProducts() {
     const keyword = this.route.snapshot.paramMap.get('keyword')!;
 

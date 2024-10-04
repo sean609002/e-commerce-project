@@ -5,7 +5,7 @@
                 <div class="card card-container p-3">
                     <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="resize-img mx-auto d-block mb-3" />
 
-                    <form name="form" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()" *ngIf="!isLoggedIn">
+                    <form name="form" [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()" *ngIf="user == undefined">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" formControlName="username" class="form-control" name="username" required />
@@ -52,8 +52,8 @@
                         </div>
                     </form>
 
-
-                    <div class="alert alert-success  mt-3 p-2 small" *ngIf="isLoggedIn">Logged in as {{ roles }}.</div>
+                    <a href="{{this.authUrl}}" *ngIf="user == undefined">github登入</a>
+                    <div class="alert alert-success  mt-3 p-2 small" *ngIf="user != undefined">Logged in as {{ user.roles }}.</div>
                 </div>
             </div>
         </div>
